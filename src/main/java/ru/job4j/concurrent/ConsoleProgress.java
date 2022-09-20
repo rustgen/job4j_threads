@@ -14,13 +14,17 @@ public class ConsoleProgress implements Runnable {
         int count = 0;
         while (!Thread.currentThread().isInterrupted()) {
             System.out.print("\r load: " + process[count++]);
-            if (count == process.length) {
-                count = 0;
-            }
             try {
                 Thread.sleep(200);
             } catch (InterruptedException e) {
+                /**
+                 * if the sleep(), join() or wait() methods are used,
+                 * then you need to call an interrupt in the catch block
+                 */
                 Thread.currentThread().interrupt();
+            }
+            if (count == process.length) {
+                count = 0;
             }
         }
     }
