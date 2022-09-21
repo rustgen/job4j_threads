@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.*;
 
 public class Wget implements Runnable {
-    private static final int SIZE_LIMIT = 1024;
+    private static final int SIZE_LIMIT = 1048576;
     private final String url;
     private final String file;
     private final int speed;
@@ -28,16 +28,20 @@ public class Wget implements Runnable {
             byte[] dataBuffer = new byte[SIZE_LIMIT];
             int bytesRead;
             long startTime = System.currentTimeMillis();
+            int downloadData = 0;
             while ((bytesRead = in.read(dataBuffer, 0, SIZE_LIMIT)) != -1) {
+                downloadData++;
                 long afterTime = System.currentTimeMillis();
-                fos.write(dataBuffer, 0, bytesRead);
                 long difference = afterTime - startTime;
-                if (afterTime < difference) {
-                    Thread.sleep(2000);
+                fos.write(dataBuffer, 0, bytesRead);
+                if (difference < 1000) {
+                    Thread.sleep(1000 - difference);
+                    downloadData = 0;
                 }
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
     }
