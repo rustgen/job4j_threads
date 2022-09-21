@@ -24,11 +24,11 @@ public class Wget implements Runnable {
         }
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
              FileOutputStream fos = new FileOutputStream(file)) {
-            byte[] dataBuffer = new byte[1048576];
+            byte[] dataBuffer = new byte[1024];
             int bytesRead;
             long startTime = System.currentTimeMillis();
             int downloadData = 0;
-            while ((bytesRead = in.read(dataBuffer, 0, 1048576)) != -1) {
+            while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
                 System.out.println(bytesRead);
                 downloadData += bytesRead;
                 if (downloadData >= speed) {
