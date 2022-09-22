@@ -11,7 +11,7 @@ public class AccountStorage {
     }
 
     public synchronized boolean update(Account account) {
-        return accounts.replace(account.getId(), accounts.get(account.getId()), account);
+        return accounts.computeIfPresent(account.getId(), (integer, acc) -> account) == account;
     }
 
     public synchronized boolean delete(int id) {
@@ -23,8 +23,10 @@ public class AccountStorage {
     }
 
     public boolean transfer(int fromId, int toId, int amount) {
-        Account accountFrom = getById(fromId).orElseThrow();
-        Account accountTo = getById(toId).orElseThrow();
+        Account accountFrom = getById(fromId)
+                .orElseThrow(() -> new NullPointerException("There is no account wth such id. Put correct id."));
+        Account accountTo = getById(toId)
+                .orElseThrow(() -> new NullPointerException("There is no account wth such id. Put correct id."));
         int amountFrom = accountFrom.amount();
         int amountTo = accountTo.amount();
         if (amountFrom < amount) {
