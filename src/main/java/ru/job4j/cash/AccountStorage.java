@@ -27,6 +27,9 @@ public class AccountStorage {
         Account accountTo = getById(toId).orElseThrow();
         int amountFrom = accountFrom.amount();
         int amountTo = accountTo.amount();
+        if (amountFrom < amount) {
+            return false;
+        }
         accountFrom.setAmount(amountFrom - amount);
         accountTo.setAmount(amountTo + amount);
         return true;

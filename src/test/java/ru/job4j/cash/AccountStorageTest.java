@@ -1,6 +1,5 @@
 package ru.job4j.cash;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -53,7 +52,6 @@ class AccountStorageTest {
         var storage = new AccountStorage();
         storage.add(new Account(1, 100));
         storage.add(new Account(2, 100));
-        Assert.assertThrows(IllegalArgumentException.class,
-                () -> storage.transfer(1, 2, 120));
+        assertThat(storage.transfer(1, 2, 120)).isFalse();
     }
 }
