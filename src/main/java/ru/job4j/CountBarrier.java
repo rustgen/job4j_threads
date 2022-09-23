@@ -13,15 +13,8 @@ public class CountBarrier {
 
     public void count() {
         synchronized (monitor) {
-            while (count >= total) {
-                try {
-                    count++;
-                    monitor.notifyAll();
-                } catch (Exception e) {
-                    Thread.currentThread().interrupt();
-                    System.out.println("Thread interrupted.");
-                }
-            }
+            count++;
+            monitor.notifyAll();
         }
     }
 
