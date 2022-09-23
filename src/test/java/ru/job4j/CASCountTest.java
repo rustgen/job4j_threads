@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CASCountTest {
 
     @Test
-    void whenIncreaseIn2ThreadsWillSumCountsOfThemWithThreadSafe() {
+    void whenIncreaseIn2ThreadsWillSumCountsOfThemWithThreadSafe() throws InterruptedException {
         CASCount casCount = new CASCount();
         Thread countOne = new Thread(
                 () -> {
@@ -25,8 +25,8 @@ class CASCountTest {
         );
         countOne.start();
         countTwo.start();
-        countOne.interrupt();
-        countTwo.interrupt();
+        countOne.join();
+        countTwo.join();
         assertThat(4).isEqualTo(casCount.get());
         casCount.increment();
         casCount.increment();
