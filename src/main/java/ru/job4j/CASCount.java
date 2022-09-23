@@ -3,16 +3,15 @@ package ru.job4j;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class CASCount {
-    private final AtomicReference<Integer> count = new AtomicReference<>();
+    private final AtomicReference<Integer> count = new AtomicReference<>(0);
 
     public void increment() {
         int oldNum;
         int newNum;
         do {
             oldNum = count.get();
-            newNum = oldNum++;
+            newNum = oldNum + 1;
         } while (!count.compareAndSet(oldNum, newNum));
-        throw new UnsupportedOperationException("Count is not impl.");
     }
 
     public int get() {
