@@ -24,9 +24,9 @@ public class AccountStorage {
 
     public boolean transfer(int fromId, int toId, int amount) {
         Account accountFrom = getById(fromId)
-                .orElseThrow(() -> new NullPointerException("There is no account wth such id. Put correct id."));
+                .orElseThrow(() -> new IllegalArgumentException("There is no account wth such id. Put correct id."));
         Account accountTo = getById(toId)
-                .orElseThrow(() -> new NullPointerException("There is no account wth such id. Put correct id."));
+                .orElseThrow(() -> new IllegalArgumentException("There is no account wth such id. Put correct id."));
         int amountFrom = accountFrom.amount();
         int amountTo = accountTo.amount();
         if (amountFrom < amount) {
