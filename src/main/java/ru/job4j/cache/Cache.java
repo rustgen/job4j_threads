@@ -30,7 +30,7 @@ public class Cache {
     }
 
     public Map<Integer, Base> getAll() {
-        return memory;
+        return new ConcurrentHashMap<>(memory);
     }
 
     public Base get(Base model) {
