@@ -31,6 +31,10 @@ class CacheTest {
         Cache cache = new Cache();
         Base model1 = new Base(1, 1);
         Base model2 = new Base(1, 2);
+        cache.add(model1);
+        assertThrows(OptimisticException.class, () -> {
+            cache.update(model2);
+        });
     }
 
     @Test

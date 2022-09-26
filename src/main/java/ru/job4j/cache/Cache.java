@@ -17,12 +17,10 @@ public class Cache {
                 throw new OptimisticException("Versions are not equal");
             }
                     Base updated = new Base(integer, base.getVersion() + 1);
-                    if (!model.getName().equals(base.getName())) {
-                        updated.setName(model.getName());
-                    }
+                    updated.setName(model.getName());
             return updated;
         })
-        ) == model;
+        ) != null;
     }
 
     public void delete(Base model) {
