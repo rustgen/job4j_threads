@@ -21,7 +21,7 @@ public class ParallelFindIndex<T> extends RecursiveTask<Integer> {
     protected Integer compute() {
         int result = -1;
         if ((to - from) <= 10) {
-            for (int i = from; i < to; i++) {
+            for (int i = from; i <= to; i++) {
                 if (object.equals(array[i])) {
                     result = i;
                     break;
@@ -30,28 +30,11 @@ public class ParallelFindIndex<T> extends RecursiveTask<Integer> {
             return result;
         }
         int mid = (from + to) / 2;
-        int resultLeft = 0;
-        int resultRight = 0;
         ParallelFindIndex<T> leftParallel = new ParallelFindIndex<>(array, object, from, mid);
         ParallelFindIndex<T> rightParallel = new ParallelFindIndex<>(array, object, mid + 1, to);
-        for (int i = from; i < mid; i++) {
-            if (object.equals(leftParallel.array[i])) {
-                resultLeft = i;
-                break;
-            }
-        }
-        for (int i = mid; i < to; i++) {
-            if (object.equals(rightParallel.array[i])) {
-                resultRight = i;
-                break;
-            }
-        }
         leftParallel.fork();
         rightParallel.fork();
-        leftParallel.join();
-        rightParallel.join();
-        result = Math.max(resultLeft, resultRight);
-        return result;
+        return Math.max(leftParallel.join(), rightParallel.join());
     }
 
     public Object find(T[] array, T object) {
