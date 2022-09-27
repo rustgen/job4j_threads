@@ -20,7 +20,7 @@ public class ThreadPool {
                     () -> {
                         while (!Thread.currentThread().isInterrupted()) {
                             try {
-                                tasks.poll();
+                                tasks.poll().run();
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Thread.currentThread().interrupt();
@@ -33,12 +33,8 @@ public class ThreadPool {
         }
     }
 
-    public void work(Runnable job) {
-        try {
-            tasks.offer(job);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public void work(Runnable job) throws InterruptedException {
+        tasks.offer(job);
     }
 
     public void shutdown() {
