@@ -19,11 +19,15 @@ public class ParallelFindIndex<T> extends RecursiveTask<Integer> {
 
     @Override
     protected Integer compute() {
-        int result;
+        int result = -1;
         if ((to - from) <= 10) {
             for (int i = from; i < to; i++) {
-                return object.equals(array[i]) ? i : -1;
+                if (object.equals(array[i])) {
+                    result = i;
+                    break;
+                }
             }
+            return result;
         }
         int mid = (from + to) / 2;
         int resultLeft = 0;
@@ -44,8 +48,8 @@ public class ParallelFindIndex<T> extends RecursiveTask<Integer> {
         }
         leftParallel.fork();
         rightParallel.fork();
-        Integer left = leftParallel.join();
-        Integer right = rightParallel.join();
+        leftParallel.join();
+        rightParallel.join();
         result = Math.max(resultLeft, resultRight);
         return result;
     }
