@@ -22,7 +22,6 @@ public class ThreadPool {
                             try {
                                 tasks.poll().run();
                             } catch (Exception e) {
-                                e.printStackTrace();
                                 Thread.currentThread().interrupt();
                             }
                         }
@@ -45,17 +44,15 @@ public class ThreadPool {
 
     public static void main(String[] args) {
         ThreadPool pool = new ThreadPool();
-
-        for (int i = 0; i < 5; i += 1) {
+        for (int i = 0; i < 50; i++) {
             try {
-                pool.work(new Job(i));
-                System.out.println(new Job(i));
+                Job job = new Job(i);
+                pool.work(job);
+                System.out.println(job);
             } catch (Exception e) {
-                e.printStackTrace();
                 Thread.currentThread().interrupt();
             }
         }
-
         pool.shutdown();
     }
 }
