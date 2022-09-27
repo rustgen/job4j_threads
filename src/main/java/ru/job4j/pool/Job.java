@@ -2,7 +2,7 @@ package ru.job4j.pool;
 
 import java.util.Objects;
 
-public class Job {
+public class Job implements Runnable {
 
     private final int id;
 
@@ -25,5 +25,14 @@ public class Job {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public void run() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

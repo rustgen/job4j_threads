@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ThreadPool {
+
+    /* The number of cores in the system */
     private static final int SIZE = Runtime.getRuntime().availableProcessors();
 
     private final List<Thread> threads = new LinkedList<>();
@@ -14,20 +16,29 @@ public class ThreadPool {
 
     public ThreadPool() {
         for (int i = 0; i < SIZE; i++) {
-            while (!Thread.currentThread().isInterrupted()) {
-                try {
-                    Runnable poll = tasks.poll();
-                    Thread thread = new Thread(poll);
-                    threads.add(thread);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+            Thread thread = new Thread(
+                    () -> {
+                        while (!Thread.currentThread().isInterrupted()) {
+                            try {
+                                tasks.poll();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Thread.currentThread().interrupt();
+                            }
+                        }
+                    }
+            );
+            thread.start();
+            threads.add(thread);
         }
     }
 
-    public void work(Runnable job) throws InterruptedException {
-        tasks.offer(job);
+    public void work(Runnable job) {
+        try {
+            tasks.offer(job);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void shutdown() {
@@ -41,9 +52,9 @@ public class ThreadPool {
 
         for (int i = 0; i < 5; i += 1) {
             try {
-                pool.work((Runnable) new Job(i));
+                pool.work(new Job(i));
                 System.out.println(new Job(i));
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 Thread.currentThread().interrupt();
             }
