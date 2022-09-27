@@ -1,63 +1,58 @@
 package ru.job4j.pools;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
-public class ParallelFindIndex extends RecursiveTask<Integer> {
+public class ParallelFindIndex<T> extends RecursiveTask<Integer> {
 
-    /* The number of cores in the system */
-    private static final int SIZE = Runtime.getRuntime().availableProcessors();
-    private final int[] array;
-    private final int index;
+    private final T[] array;
+    private final T object;
+    private final int from;
+    private final int to;
 
-    public ParallelFindIndex(int[] array, int index) {
+    public ParallelFindIndex(T[] array, T object, int from, int to) {
         this.array = array;
-        this.index = index;
+        this.object = object;
+        this.from = from;
+        this.to = to;
     }
 
     @Override
     protected Integer compute() {
-        if (array.length < 10) {
-            for (int i = 0; i < array.length; i++) {
-                if (index == i) {
-                    return i;
-                }
+        int result;
+        if ((to - from) <= 10) {
+            for (int i = from; i < to; i++) {
+                return object.equals(array[i]) ? i : -1;
             }
         }
-
-        int parts = array.length / SIZE;
-        List<int[]> list = new ArrayList<>();
-        for (int i = 0; i < array.length; i += parts) {
-            int[] arr = Arrays.copyOfRange(array, i, Math.min(array.length, i + parts));
-            list.add(arr);
-        }
-        for (int[] ar : list) {
-            for (int i = 0; i < ar.length; i++) {
-                ParallelFindIndex findIndex = new ParallelFindIndex(ar, index);
-                findIndex.fork();
-                if (index == i) {
-                    findIndex.join();
-                    return index;
-                }
+        int mid = (from + to) / 2;
+        int resultLeft = 0;
+        int resultRight = 0;
+        ParallelFindIndex<T> leftParallel = new ParallelFindIndex<>(array, object, from, mid);
+        ParallelFindIndex<T> rightParallel = new ParallelFindIndex<>(array, object, mid + 1, to);
+        for (int i = from; i < mid; i++) {
+            if (object.equals(leftParallel.array[i])) {
+                resultLeft = i;
+                break;
             }
         }
-        return -1;
+        for (int i = mid; i < to; i++) {
+            if (object.equals(rightParallel.array[i])) {
+                resultRight = i;
+                break;
+            }
+        }
+        leftParallel.fork();
+        rightParallel.fork();
+        Integer left = leftParallel.join();
+        Integer right = rightParallel.join();
+        result = Math.max(resultLeft, resultRight);
+        return result;
     }
 
-    public static int find(int[] array, int index) {
+    public Object find(T[] array, T object) {
         ForkJoinPool forkJoinPool = new ForkJoinPool();
-        return forkJoinPool.invoke(new ParallelFindIndex(array, index));
-    }
-
-    public static void main(String[] args) {
-        int[] array = new int[150];
-        for (int i = 0; i < array.length; i++) {
-            i = (int) (Math.random() * 2359909);
-        }
-        System.out.println(find(array, 2));
-
+        return forkJoinPool
+                .invoke(new ParallelFindIndex<T>(array, object, 0, array.length - 1));
     }
 }
