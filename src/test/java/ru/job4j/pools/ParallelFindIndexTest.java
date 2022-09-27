@@ -31,18 +31,18 @@ class ParallelFindIndexTest {
     }
 
     @Test
-    public void whenObjectOfNumsMoreThan10FindMaxIndexOf1ResultIs8() {
+    public void whenObjectOfNumsMoreThan10FindLinenFirstIndexOf1ResultIs0() {
         Object[] nums = new Object[]{1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
         Object numSearch = 1;
         ParallelFindIndex<Object> parallelFindIndex = new ParallelFindIndex<>(nums, numSearch, 0, 8);
-        assertEquals(8, parallelFindIndex.find(nums, numSearch));
+        assertEquals(0, parallelFindIndex.find(nums, numSearch));
     }
 
     @Test
-    public void whenObjectOfSymbolsEquals10FindMaxIndexOfCharBResultIs1() {
-        Object[] chars = new Object[]{'a', 'b', 'a', 'b', 'a', 'b', 'a', 'b', 'a', 'b'};
+    public void whenObjectOfSymbolsMore10FindLinenFirtsIndexOfCharBResultIs10() {
+        Object[] chars = new Object[]{'a', 'b', 'a', 'b', 'a', 'b', 'a', 'b', 'a', 'b', 'b', 'b'};
         Object numSearch = 'b';
-        ParallelFindIndex<Object> parallelFindIndex = new ParallelFindIndex<>(chars, numSearch, 0, chars.length);
-        assertEquals(1, parallelFindIndex.find(chars, numSearch));
+        ParallelFindIndex<Object> parallelFindIndex = new ParallelFindIndex<>(chars, numSearch, 0, chars.length - 1);
+        assertEquals(10, parallelFindIndex.find(chars, numSearch));
     }
 }
