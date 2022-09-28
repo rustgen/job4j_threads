@@ -37,7 +37,7 @@ public class ParallelFindIndex<T> extends RecursiveTask<Integer> {
         return Math.max(leftParallel.join(), rightParallel.join());
     }
 
-    public Object find(T[] array, T object) {
+    public Integer find(T[] array, T object) {
         ForkJoinPool forkJoinPool = new ForkJoinPool();
         return forkJoinPool
                 .invoke(new ParallelFindIndex<T>(array, object, 0, array.length - 1));
