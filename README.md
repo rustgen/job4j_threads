@@ -13,6 +13,7 @@ This interface has one public void run() method. The methods defined in this met
 
 In order not to create an anonymous class, it's easier to use a lambda expression.
 
+Updated by task_124176.
 "Worked with git branches."
 Made amends to the previous commit.
 
