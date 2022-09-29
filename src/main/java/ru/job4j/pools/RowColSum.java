@@ -2,7 +2,6 @@ package ru.job4j.pools;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -86,21 +85,5 @@ public class RowColSum {
             }
             return sums;
         });
-    }
-
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
-        int[][] matrix = {
-                {1, 2},
-                {3, 4}
-        };
-        long beforeSerialSum = System.currentTimeMillis();
-        RowColSum.sum(matrix);
-        long afterSerialSum = System.currentTimeMillis();
-        System.out.println(afterSerialSum - beforeSerialSum);
-
-        long beforeAsyncSum = System.currentTimeMillis();
-        RowColSum.asyncSum(matrix);
-        long afterAsyncSum = System.currentTimeMillis();
-        System.out.println(afterAsyncSum - beforeAsyncSum);
     }
 }
