@@ -7,35 +7,6 @@ import java.util.concurrent.ExecutionException;
 
 public class RowColSum {
 
-    public static class Sums {
-        private int rowSum;
-        private int colSum;
-
-        public int getRowSum() {
-            return rowSum;
-        }
-
-        public void setRowSum(int rowSum) {
-            this.rowSum = rowSum;
-        }
-
-        public int getColSum() {
-            return colSum;
-        }
-
-        public void setColSum(int colSum) {
-            this.colSum = colSum;
-        }
-
-        @Override
-        public String toString() {
-            return "Sums{"
-                   + "rowSum=" + rowSum
-                   + ", colSum=" + colSum
-                   + '}';
-        }
-    }
-
     public static Sums[] sum(int[][] matrix) {
         Sums[] array = new Sums[matrix.length];
         Sums sums = new Sums();
@@ -46,9 +17,7 @@ public class RowColSum {
                 rowSum += matrix[i][j];
                 colSum += matrix[j][i];
             }
-            sums.setRowSum(rowSum);
-            sums.setColSum(colSum);
-            array[i] = sums;
+            array[i] = new Sums(rowSum, colSum);
             rowSum = 0;
             colSum = 0;
         }

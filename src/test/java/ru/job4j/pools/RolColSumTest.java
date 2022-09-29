@@ -14,9 +14,12 @@ class RowColSumTest {
                 {1, 2},
                 {3, 4}
         };
-        RowColSum.Sums[] res = RowColSum.sum(matrix);
-        assertThat(6).isEqualTo(res[matrix.length - 1].getColSum());
-        assertThat(7).isEqualTo(res[matrix.length - 1].getRowSum());
+        Sums[] res = RowColSum.sum(matrix);
+        Sums[] exp = new Sums[] {
+                new Sums(3, 4),
+                new Sums(7, 6)
+        };
+        assertThat(res).isEqualTo(exp);
     }
 
     @Test
@@ -26,8 +29,12 @@ class RowColSumTest {
                 {4, 5, 6},
                 {7, 8, 9}
         };
-        RowColSum.Sums[] res = RowColSum.asyncSum(matrix);
-        assertThat(18).isEqualTo(res[matrix.length - 1].getColSum());
-        assertThat(15).isEqualTo(res[matrix.length - 2].getRowSum());
+        Sums[] res = RowColSum.asyncSum(matrix);
+        Sums[] exp = {
+                new Sums(6, 12),
+                new Sums(15, 15),
+                new Sums(24, 18)
+        };
+        assertThat(res).isEqualTo(exp);
     }
 }
