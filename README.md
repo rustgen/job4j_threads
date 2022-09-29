@@ -15,6 +15,14 @@ In order not to create an anonymous class, it's easier to use a lambda expressio
 
 Made amends to the previous commit.
 
-Reverting changes in Git[#504830]
+Reverting changes in Git[#504830].
 
-"Merge Committed Changes"
+"Merge Committed Changes".
+
+3.4. Temporary storage. git stash. [#504832].
+
+This commit before stashed.
+
+And now push this commit after previous was changed and pushed.
+(ACCEPT THEIRS CHANGES WHEN CHOOSE STASHED FILE)
+if you change in this branch
