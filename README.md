@@ -14,3 +14,5 @@ This interface has one public void run() method. The methods defined in this met
 In order not to create an anonymous class, it's easier to use a lambda expression.
 
 Made amends to the previous commit.
+
+Reverting changes in Git[#504830]

@@ -2,12 +2,9 @@ package ru.job4j.pools;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
 
 class RowColSumTest {
 
@@ -44,31 +41,34 @@ class RowColSumTest {
         long beforeSerialSum = System.nanoTime();
         RowColSum.sum(matrix);
         long afterSerialSum = System.nanoTime();
+        long serialSum = afterSerialSum - beforeSerialSum;
 
         long beforeAsyncSum = System.nanoTime();
         RowColSum.asyncSum(matrix);
         long afterAsyncSum = System.nanoTime();
+        long asyncSum = afterAsyncSum - beforeAsyncSum;
 
-        assertThat(afterAsyncSum - beforeAsyncSum).isGreaterThan(afterSerialSum - beforeSerialSum);
+        assertThat(asyncSum).isGreaterThan(serialSum);
     }
 
     @Test
     public void whenMatrixAsyncSumFasterThanSerialSum() throws ExecutionException, InterruptedException {
-        Random random = new Random();
-        int[][] matrix = new int[10000][10000];
+        int[][] matrix = new int[4000][4000];
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[i].length; j++) {
-                matrix[i][j] = random.nextInt(100);
+                matrix[i][j] = 12;
             }
         }
         long beforeSerialSum = System.currentTimeMillis();
         RowColSum.sum(matrix);
         long afterSerialSum = System.currentTimeMillis();
+        long serialSum = afterSerialSum - beforeSerialSum;
 
         long beforeAsyncSum = System.currentTimeMillis();
         RowColSum.asyncSum(matrix);
         long afterAsyncSum = System.currentTimeMillis();
+        long asyncSum = afterAsyncSum - beforeAsyncSum;
 
-        assertThat(afterAsyncSum - beforeAsyncSum).isLessThan(afterSerialSum - beforeSerialSum);
+        assertThat(asyncSum).isLessThan(serialSum);
     }
 }
